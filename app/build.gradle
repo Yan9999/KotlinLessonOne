@@ -6,6 +6,11 @@ apply plugin: 'kotlin-android'
 android {
     compileSdk 32
 
+
+    viewBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.example.kotlinlessonone"
         minSdk 24
