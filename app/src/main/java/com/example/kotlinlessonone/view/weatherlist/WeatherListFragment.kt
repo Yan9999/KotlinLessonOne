@@ -10,41 +10,46 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlinlessonone.databinding.FragmentWeatherListBinding
 import com.example.kotlinlessonone.viewmodel.AppState
-import com.example.kotlinlessonone.viewmodel.AppStateSecond
 
 class WeatherListFragment:Fragment(){
     companion object{
         fun newInstance() = WeatherListFragment()
         }
-         lateinit var  bindin :FragmentWeatherListBinding
+         lateinit var  binding :FragmentWeatherListBinding
          lateinit var viewModel: WeatherListViewModel
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-      bindin = FragmentWeatherListBinding.inflate(inflater)
-        return bindin.root
+      binding = FragmentWeatherListBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
-        viewModel.liveData.observe(viewLifecycleOwner, object:Observer<AppState>{
+        viewModel.getLiveData().observe(viewLifecycleOwner, object:Observer<AppState>{
             override fun onChanged(t: AppState) {
 
                 renderData(t)
             } })
-    viewModel.sentReqest()
+    viewModel.sentRequest()
     }
     private fun renderData(appState: AppState){
-        val state = AppState.Success(Any())
         when (appState){
-            is AppState.Error -> { }
-            AppState.Loading -> {}
+            is AppState.Error -> {
+                Toast.makeText(requireContext(), "Произогла ошибка, перезагрузите приложение ",
+                        Toast.LENGTH_LONG ).show()
+            }
+            AppState.Loading -> { Toast.makeText(requireContext(), "Идет загрузка ...", Toast.LENGTH_LONG ).show()}
             is AppState.Success -> {
                 val result = appState.weatherData
+                binding.cityName.text = result.city.name
+                binding.temperatureValue.text = result.template.toString()
+                binding.feelsLikeValue.text = result.feelsLike.toString()
+                binding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
                 Toast.makeText(requireContext(), "Работает $result", Toast.LENGTH_LONG ).show()
             }
-            else -> {}
+
         }
         }
     }
