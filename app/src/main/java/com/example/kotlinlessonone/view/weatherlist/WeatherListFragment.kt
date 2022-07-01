@@ -48,6 +48,11 @@ class WeatherListFragment:Fragment(){
                 binding.feelsLikeValue.text = result.feelsLike.toString()
                 binding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
                 Toast.makeText(requireContext(), "Работает $result", Toast.LENGTH_LONG ).show()
+
+
+
+
+
             }
 
         }
