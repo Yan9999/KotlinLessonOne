@@ -6,7 +6,7 @@ import com.example.kotlinlessonone.domain.getRussianCities
 import com.example.kotlinlessonone.domain.getWorldCities
 import com.example.kotlinlessonone.viewmodel.AppState
 
-class RepositoryRemoteImpl:RepositoryOne {
+class RepositoryRemoteImpl:MediaCenterRu{
 
     override fun getWeather(lat: Double, Lon: Double): Weather {
 

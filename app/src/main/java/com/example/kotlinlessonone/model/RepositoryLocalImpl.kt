@@ -5,7 +5,7 @@ import com.example.kotlinlessonone.domain.Weather
 import com.example.kotlinlessonone.domain.getRussianCities
 import com.example.kotlinlessonone.domain.getWorldCities
 
-class RepositoryLocalImpl:RepositoryMany,RepositoryOne {
+class RepositoryLocalImpl:MediaCenterWorld,MediaCenterRu {
 
 
     override fun getListWeather(Location: Locations): List<Weather> {

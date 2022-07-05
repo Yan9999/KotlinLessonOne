@@ -3,10 +3,10 @@ package com.example.kotlinlessonone.model
 import android.location.Location
 import com.example.kotlinlessonone.domain.Weather
 
-interface RepositoryOne {
+interface MediaCenterRu{
     fun getWeather(lat:Double, Lon: Double ):Weather
 }
-interface RepositoryMany {
+interface MediaCenterWorld {
     fun getListWeather(Location:Locations):List<Weather>
 }
 

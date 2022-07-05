@@ -13,8 +13,8 @@ import java.lang.Thread.sleep
 class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
         ViewModel() {
 
-lateinit var  repositoryMulti: RepositoryMany
-    lateinit var  repositoryOne: RepositoryOne
+lateinit var  mediaCenterWorld: MediaCenterWorld
+    lateinit var  mediaCenterRu: MediaCenterRu
 
 
     fun getLiveData():MutableLiveData<AppState>{
@@ -29,9 +29,9 @@ lateinit var  repositoryMulti: RepositoryMany
     }
      private fun choiceRepository(){
         if(isConnection()){
-            repositoryOne = RepositoryRemoteImpl()
+            mediaCenterRu = RepositoryRemoteImpl()
         }else{
-            repositoryMulti = RepositoryLocalImpl()
+            mediaCenterWorld = RepositoryLocalImpl()
         }
     }
 
@@ -46,7 +46,7 @@ lateinit var  repositoryMulti: RepositoryMany
             liveData.postValue(AppState.Error(throw IllegalStateException("Что-то не так так так ")))
 
         }else{
-            liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(Location)))
+            liveData.postValue(AppState.SuccessMulti(mediaCenterWorld.getListWeather(Location)))
         }
 
 
