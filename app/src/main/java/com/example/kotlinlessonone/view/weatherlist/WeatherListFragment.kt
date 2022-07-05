@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.kotlinlessonone.R
 import com.example.kotlinlessonone.databinding.FragmentWeatherListBinding
 import com.example.kotlinlessonone.viewmodel.AppState
 
@@ -16,6 +17,8 @@ class WeatherListFragment:Fragment(){
     companion object{
         fun newInstance() = WeatherListFragment()
         }
+
+    var isRussian = true
      private var  _binding :FragmentWeatherListBinding? = null
     private val  binding :FragmentWeatherListBinding
     get(){
@@ -42,31 +45,37 @@ class WeatherListFragment:Fragment(){
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, object:Observer<AppState>{
             override fun onChanged(t: AppState) {
-
                 renderData(t)
             } })
-    viewModel.sentRequest()
+
+        binding.weatherListFragmentFAB.setOnClickListener{
+            isRussian = !isRussian
+            if(isRussian){
+                viewModel.getWeatherListForRussia()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.russia)
+            }else{
+                viewModel.getWeatherListForWorld()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.images)
+            }
+        }
+        viewModel.getWeatherListForRussia()
     }
     private fun renderData(appState: AppState){
-        when (appState){
+        when (appState) {
             is AppState.Error -> {
                 Toast.makeText(requireContext(), "Произогла ошибка, перезагрузите приложение ",
-                        Toast.LENGTH_LONG ).show()
+                        Toast.LENGTH_LONG).show()
             }
-            AppState.Loading -> { Toast.makeText(requireContext(), "Идет загрузка ...", Toast.LENGTH_LONG ).show()}
-            is AppState.Success -> {
+            AppState.Loading -> {
+                Toast.makeText(requireContext(), "Идет загрузка ...", Toast.LENGTH_LONG).show()
+            }
+            is AppState.SuccessOne -> {
                 val result = appState.weatherData
-                binding.cityName.text = result.city.name
-                binding.temperatureValue.text = result.template.toString()
-                binding.feelsLikeValue.text = result.feelsLike.toString()
-                binding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
-                Toast.makeText(requireContext(), "Работает $result", Toast.LENGTH_LONG ).show()
-
-
-
-
-
             }
+            is AppState.SuccessMulti -> {
+                binding.mainFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList)
+            }
+
 
         }
         }

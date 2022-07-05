@@ -1,10 +1,10 @@
 package com.example.kotlinlessonone.view.weatherlist
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kotlinlessonone.model.Repository
-import com.example.kotlinlessonone.model.RepositoryLocalImpl
-import com.example.kotlinlessonone.model.RepositoryRemoteImpl
+import com.example.kotlinlessonone.model.*
+
 import com.example.kotlinlessonone.viewmodel.AppState
 import java.lang.IllegalStateException
 import java.lang.Thread.sleep
@@ -13,23 +13,32 @@ import java.lang.Thread.sleep
 class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
         ViewModel() {
 
-lateinit var  repository:Repository
+lateinit var  repositoryMulti: RepositoryMany
+    lateinit var  repositoryOne: RepositoryOne
 
 
     fun getLiveData():MutableLiveData<AppState>{
         choiceRepository()
         return liveData
     }
-
-    fun choiceRepository(){
+    fun getWeatherListForRussia(){
+        sentRequest(Locations.Russian)
+    }
+    fun getWeatherListForWorld(){
+        sentRequest(Locations.World)
+    }
+     private fun choiceRepository(){
         if(isConnection()){
-            repository = RepositoryRemoteImpl()
+            repositoryOne = RepositoryRemoteImpl()
         }else{
-            repository = RepositoryLocalImpl()
+            repositoryMulti = RepositoryLocalImpl()
         }
     }
 
-    fun sentRequest() {
+
+
+
+    private fun sentRequest(Location:Locations) {
        // choiceRepository()  if(isConnection())
         liveData.value = AppState.Loading
 
@@ -37,7 +46,7 @@ lateinit var  repository:Repository
             liveData.postValue(AppState.Error(throw IllegalStateException("Что-то не так так так ")))
 
         }else{
-            liveData.postValue(AppState.Success(repository.getWeather(55.755826, 37.617299900000035)))
+            liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(Location)))
         }
 
 
