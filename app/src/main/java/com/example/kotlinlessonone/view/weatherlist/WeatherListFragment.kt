@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.kotlinlessonone.MainActivity
 import com.example.kotlinlessonone.R
 import com.example.kotlinlessonone.databinding.FragmentWeatherListBinding
+import com.example.kotlinlessonone.domain.Weather
+import com.example.kotlinlessonone.view.details.DetailsFragment
+import com.example.kotlinlessonone.view.details.OnItemClick
 import com.example.kotlinlessonone.viewmodel.AppState
 
-class WeatherListFragment:Fragment(){
+class WeatherListFragment:Fragment(),OnItemClick{
 
     companion object{
         fun newInstance() = WeatherListFragment()
@@ -73,14 +77,16 @@ class WeatherListFragment:Fragment(){
                 val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
-                binding.mainFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList)
+                binding.mainFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList,this)
             }
-
-
-
-
-
-        }
         }
     }
+
+    override fun onItemClick(weather: Weather) {
+        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+            R.id.container,
+            DetailsFragment.newInstance(weather)
+        ).addToBackStack("").commit()
+    }
+}
 

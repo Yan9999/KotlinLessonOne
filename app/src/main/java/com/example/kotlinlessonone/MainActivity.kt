@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
        // bindinq.textView.text = "Тута-Матута"
 
         if(savedInstanceState == null){
-            supportFragmentManager.beginTransaction().replace(R.id.textView,WeatherListFragment.newInstance()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.container,WeatherListFragment.newInstance()).commit()
         }
     }
 
