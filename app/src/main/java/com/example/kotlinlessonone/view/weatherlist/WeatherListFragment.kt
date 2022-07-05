@@ -77,6 +77,9 @@ class WeatherListFragment:Fragment(){
             }
 
 
+
+
+
         }
         }
     }
