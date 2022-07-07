@@ -83,14 +83,18 @@ class DetailsFragment: Fragment() {
 
     companion object{
         const val BAD_EXTRA="BAD"
-        fun newInstance(weather:Weather):DetailsFragment {
-            val fragment = DetailsFragment()
-            fragment.arguments = Bundle().apply {
-               this.putParcelable(BAD_EXTRA,weather)
+        fun newInstance(weather:Weather)=DetailsFragment().also { fr->
+            fr.arguments = Bundle().apply {
+                    this.putParcelable(BAD_EXTRA,weather)
+                    putParcelable(BAD_EXTRA,weather)
+                }
+            fr.arguments = Bundle().apply {
+                this.putParcelable(BAD_EXTRA,weather)
                 putParcelable(BAD_EXTRA,weather)
             }
-            return fragment
+
+            }
         }
 
         }
-    }
+
