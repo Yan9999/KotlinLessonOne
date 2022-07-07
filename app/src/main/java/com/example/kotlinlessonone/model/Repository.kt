@@ -1,6 +1,5 @@
 package com.example.kotlinlessonone.model
 
-import android.location.Location
 import com.example.kotlinlessonone.domain.Weather
 
 interface MediaCenterRu{

@@ -1,14 +1,13 @@
 package com.example.kotlinlessonone.view.weatherlist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.kotlinlessonone.MainActivity
 import com.example.kotlinlessonone.R
 import com.example.kotlinlessonone.databinding.FragmentWeatherListBinding
 import com.example.kotlinlessonone.domain.Weather
@@ -67,21 +66,35 @@ class WeatherListFragment:Fragment(),OnItemClick{
     private fun renderData(appState: AppState){
         when (appState) {
             is AppState.Error -> {
-                Toast.makeText(requireContext(), "Произогла ошибка, перезагрузите приложение ",
-                        Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Произогла ошибка, перезагрузите приложение ",Toast.LENGTH_LONG).show()
+                binding.showResult()
             }
             AppState.Loading -> {
                 Toast.makeText(requireContext(), "Идет загрузка ...", Toast.LENGTH_LONG).show()
+                binding.Loading()
             }
             is AppState.SuccessOne -> {
+                binding.showResult()
                 val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
+                binding.showResult()
                 binding.mainFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList,this)
             }
         }
     }
 
+
+
+    fun FragmentWeatherListBinding.Loading (){
+        this.mainFragmentLoadingLayout.visibility = View.VISIBLE
+        this.weatherListFragmentFAB.visibility = View.GONE
+    }
+    fun FragmentWeatherListBinding.showResult(){
+        this.mainFragmentLoadingLayout.visibility = View.GONE
+        this.weatherListFragmentFAB.visibility = View.VISIBLE
+
+    }
     override fun onItemClick(weather: Weather) {
         requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
             R.id.container,

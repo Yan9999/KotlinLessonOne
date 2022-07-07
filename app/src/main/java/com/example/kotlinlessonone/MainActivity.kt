@@ -1,7 +1,9 @@
 package com.example.kotlinlessonone
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.example.kotlinlessonone.TestPac.TestOne
+import com.example.kotlinlessonone.TestPac.TestTwo
 import com.example.kotlinlessonone.databinding.ActivityMainBinding
 import com.example.kotlinlessonone.view.weatherlist.WeatherListFragment
 
@@ -17,6 +19,19 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction().replace(R.id.container,WeatherListFragment.newInstance()).commit()
         }
+
+
+        val testOne =TestOne()
+        val testTwo = TestTwo()
+         testTwo.testOne= testOne
+        testTwo.extra= testOne.extra
+        testTwo.sExtra(testOne.extra)
+
+        testTwo.sayHiToTestOne("Hi")
+
+        val res1 = testTwo.extra("")
+        val res2 = testTwo.extraR("")
+
     }
 
 }

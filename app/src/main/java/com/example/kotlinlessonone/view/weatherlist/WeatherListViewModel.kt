@@ -1,13 +1,9 @@
 package com.example.kotlinlessonone.view.weatherlist
-import android.location.Location
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlinlessonone.model.*
-
 import com.example.kotlinlessonone.viewmodel.AppState
-import java.lang.IllegalStateException
-import java.lang.Thread.sleep
 
 
 class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
@@ -42,12 +38,15 @@ lateinit var  mediaCenterWorld: MediaCenterWorld
        // choiceRepository()  if(isConnection())
         liveData.value = AppState.Loading
 
-        if((0..3).random()==1){
-            liveData.postValue(AppState.Error(throw IllegalStateException("Что-то не так так так ")))
+        Thread {
+            Thread.sleep(300L)
+            if ((0..3).random() == 1) {
+                liveData.postValue(AppState.Error(IllegalStateException("Что-то не так так так ")))
 
-        }else{
-            liveData.postValue(AppState.SuccessMulti(mediaCenterWorld.getListWeather(Location)))
-        }
+            } else {
+                liveData.postValue(AppState.SuccessMulti(mediaCenterWorld.getListWeather(Location)))
+            }
+        }.start()
 
 
     }
