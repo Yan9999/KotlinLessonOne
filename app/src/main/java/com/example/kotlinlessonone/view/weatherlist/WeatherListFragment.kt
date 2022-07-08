@@ -14,6 +14,8 @@ import com.example.kotlinlessonone.domain.Weather
 import com.example.kotlinlessonone.view.details.DetailsFragment
 import com.example.kotlinlessonone.view.details.OnItemClick
 import com.example.kotlinlessonone.viewmodel.AppState
+import com.google.android.material.snackbar.Snackbar
+import java.time.Duration
 
 class WeatherListFragment:Fragment(),OnItemClick{
 
@@ -68,6 +70,15 @@ class WeatherListFragment:Fragment(),OnItemClick{
             is AppState.Error -> {
                 Toast.makeText(requireContext(), "Произогла ошибка, перезагрузите приложение ",Toast.LENGTH_LONG).show()
                 binding.showResult()
+                binding.root.HWAction("Error",Snackbar.LENGTH_SHORT,"Click again"){_ ->
+                    if(isRussian){
+                        viewModel.getWeatherListForRussia()
+                    }else{
+                        viewModel.getWeatherListForWorld()
+                    }
+
+
+                }
             }
             AppState.Loading -> {
                 Toast.makeText(requireContext(), "Идет загрузка ...", Toast.LENGTH_LONG).show()
@@ -84,7 +95,13 @@ class WeatherListFragment:Fragment(),OnItemClick{
         }
     }
 
+    fun View.HW(string: String,duration: Int){
+    Snackbar.make(this,string,duration).show()
+}
 
+    fun View.HWAction(string: String,duration: Int,actionString: String,block:(v:View)->Unit ){
+        Snackbar.make(this,string,duration).setAction("Click again",block).show()
+    }
 
     fun FragmentWeatherListBinding.Loading (){
         this.mainFragmentLoadingLayout.visibility = View.VISIBLE
